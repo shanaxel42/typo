@@ -13,6 +13,9 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
 
+    when /^the Edit Page of Article with id (\d+)$/
+      "/admin/content/edit/#{$1}"
+
     when /^the home\s?page$/
       '/'
     when /^the new article page$/

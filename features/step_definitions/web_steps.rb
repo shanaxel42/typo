@@ -31,6 +31,35 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
+Given /the following users exist/ do |user_table|
+  user_table.hashes.each do |user|
+    # each returned element will be a hash whose key is the table header.
+    # you should arrange to add that movie to the database here.
+    User.create! user 
+  end
+end
+
+Given /the following articles exist/ do |article_table|
+  article_table.hashes.each do |article|
+    # each returned element will be a hash whose key is the table header.
+    # you should arrange to add that movie to the database here.
+    Article.create! article 
+  end
+end
+
+Given /^the articles with ids "(.*?)" and "(.*?)" were merged$/ do |article1, article2|
+  article = Article.find_by_id(article1)
+  article.merge_with(article2)
+end
+
+Given /^I am logged in as "(.*?)" with pass "(.*?)"$/ do |user, pass|
+  visit '/accounts/login'
+  fill_in "user_login", :with => user
+  fill_in "user_password", :with => pass
+  click_button 'Login'
+  assert page.has_content? 'Login successful'
+end
+
 Given /^the blog is set up$/ do
   Blog.default.update_attributes!({:blog_name => 'Teh Blag',
                                    :base_url => 'http://localhost:3000'});
