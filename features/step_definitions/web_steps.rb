@@ -47,6 +47,14 @@ Given /the following articles exist/ do |article_table|
   end
 end
 
+Given /the following comments exist/ do |comment_table|
+  comment_table.hashes.each do |comment|
+    # each returned element will be a hash whose key is the table header.
+    # you should arrange to add that movie to the database here.
+    Comment.create! comment 
+  end
+end
+
 Given /^the articles with ids "(.*?)" and "(.*?)" were merged$/ do |article1, article2|
   article = Article.find_by_id(article1)
   article.merge_with(article2)
@@ -59,6 +67,12 @@ Given /^I am logged in as "(.*?)" with pass "(.*?)"$/ do |user, pass|
   click_button 'Login'
   assert page.has_content? 'Login successful'
 end
+
+Then /^the author of "(.*?)" should be "(.*?)"$/ do |arg1, arg2|
+  article = Article.find_by_id(arg1)
+  assert article.author == arg2
+end
+
 
 Given /^the blog is set up$/ do
   Blog.default.update_attributes!({:blog_name => 'Teh Blag',
